@@ -2,34 +2,28 @@
 
 class Figure {
 public:
-    Figure() : sidesCount{ 0 }, name{ "Фигура:" }, okey { true } {}
+    Figure() : sidesCount{ 0 }, name{ "Фигура:" } {}
+
+    virtual void printInfo()
+    {
+        std::cout << this->name << std::endl;
+        std::cout << (this->getStatus() ? "Правильная" : "Неправильная") << std::endl;
+        std::cout << "Количество сторон: " << this->getSidesCount() << std::endl << std::endl;
+    }
 
     int getSidesCount()
     {
         return this->sidesCount;
     }
 
-    virtual void printInfo()
+    virtual bool getStatus()
     {
-        std::cout << this->name << std::endl;
-        std::cout << this->getStatus();
-        std::cout << "Количество сторон: " << this->getSidesCount() << std::endl << std::endl;
-    }
-
-    std::string getStatus()
-    {
-        if (okey)
-        {
-            return "Правильная\n";
-        }
-
-        return "Неправильная\n";
+        return true;
     }
 
 protected:
     std::string name;
     int sidesCount;
-    bool okey;
 };
 
 class Triangle : public Figure {
@@ -39,20 +33,12 @@ public:
     {
         this->name = "Треугольник:";
         this->sidesCount = 3;
-        if (A + B + C == 180)
-        {
-            this->okey = true;
-        }
-        else
-        {
-            this->okey = false;
-        }
     }
 
     virtual void printInfo() override
     {
         std::cout << this->name << std::endl;
-        std::cout << this->getStatus();
+        std::cout << (this->getStatus() ? "Правильная" : "Неправильная") << std::endl;
         std::cout << "Количество сторон: " << this->getSidesCount() << std::endl;
         std::cout << "Стороны:\t";
         std::cout << "a = " << this->geta() << " ";
@@ -64,6 +50,15 @@ public:
         std::cout << "B = " << this->getB() << " ";
         std::cout << "C = " << this->getC() << " ";
         std::cout << std::endl << std::endl;
+    }
+
+    virtual bool getStatus() override
+    {
+        if (A + B + C == 180)
+        {
+            return true;
+        }
+        return false;
     }
 
     int geta()
@@ -108,20 +103,12 @@ public:
     {
         this->name = "Четырехугольник:";
         this->sidesCount = 4;
-        if (A + B + C + D == 360)
-        {
-            this->okey = true;
-        }
-        else
-        {
-            this->okey = false;
-        }
     }
 
     virtual void printInfo() override
     {
         std::cout << this->name << std::endl;
-        std::cout << this->getStatus();
+        std::cout << (this->getStatus() ? "Правильная" : "Неправильная") << std::endl;
         std::cout << "Количество сторон: " << this->getSidesCount() << std::endl;
         std::cout << "Стороны:\t";
         std::cout << "a = " << this->geta() << " ";
@@ -135,6 +122,15 @@ public:
         std::cout << "C = " << this->getC() << " ";
         std::cout << "D = " << this->getD() << " ";
         std::cout << std::endl << std::endl;
+    }
+
+    virtual bool getStatus() override
+    {
+        if (A + B + C + D == 360)
+        {
+            return true;
+        }
+        return false;
     }
 
     int geta()
@@ -189,6 +185,15 @@ public:
     {
         this->name = "Прямоугольный треугольник:";
     }
+
+    virtual bool getStatus() override
+    {
+        if (A == 90 || B == 90 || C == 90)
+        {
+            return Triangle::getStatus();
+        }
+        return false;
+    }
 };
 
 // Равнобедренный треугольник
@@ -198,6 +203,15 @@ public:
         Triangle(_a, _b, _a, _A, _B, _A) 
     {
         this->name = "Равнобедренный треугольник:";
+    }
+
+    virtual bool getStatus() override
+    {
+        if (a == b || a == c || b == c)
+        {
+            return Triangle::getStatus();
+        }
+        return false;
     }
 };
 
@@ -209,6 +223,15 @@ public:
     {
         this->name = "Равносторонний треугольник:";
     }
+
+    virtual bool getStatus() override
+    {
+        if (a == b && a == c)
+        {
+            return Triangle::getStatus();
+        }
+        return false;
+    }
 };
 
 // Параллелограмм
@@ -218,6 +241,15 @@ public:
         Quadrilateral(_a, _b, _a, _b, _A, _B, _A, _B) 
     {
         this->name = "Параллелограмм:";
+    }
+
+    virtual bool getStatus() override
+    {
+        if ((a == b && c == d) || (a == c && b == d) || (a == d && b == c))
+        {
+            return Quadrilateral::getStatus();
+        }
+        return false;
     }
 };
 
@@ -229,6 +261,15 @@ public:
     {
         this->name = "Прямоугольник:";
     }
+
+    virtual bool getStatus() override
+    {
+        if (A == 90 && A == B && A == C && A == D)
+        {
+            return Parall::getStatus();
+        }
+        return false;
+    }
 };
 
 // Квадрат
@@ -239,6 +280,15 @@ public:
     {
         this->name = "Квадрат:";
     }
+
+    virtual bool getStatus() override
+    {
+        if (a == b && a == c && a == d)
+        {
+            return Rectangle::getStatus();
+        }
+        return false;
+    }
 };
 
 // Ромб
@@ -248,6 +298,15 @@ public:
         Parall(_a, _a, _A, _B) 
     {
         this->name = "Ромб:";
+    }
+
+    virtual bool getStatus() override
+    {
+        if (a == b && a == c && a == d)
+        {
+            return Parall::getStatus();
+        }
+        return false;
     }
 };
 

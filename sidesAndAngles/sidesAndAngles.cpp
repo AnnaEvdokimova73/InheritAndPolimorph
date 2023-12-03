@@ -2,7 +2,7 @@
 
 class Figure {
 public:
-    Figure() : sidesCount{ 0 } {}
+    Figure() : sidesCount{ 0 }, name{ "Фигура:" } {}
 
     int getSidesCount()
     {
@@ -11,10 +11,12 @@ public:
 
     virtual void printInfo()
     {
+        std::cout << this->name << std::endl;
         std::cout << "Количество сторон: " << this->getSidesCount() << std::endl;
     }
 
 protected:
+    std::string name;
     int sidesCount;
 };
 
@@ -23,11 +25,13 @@ public:
     Triangle(int _a, int _b, int _c, int _A, int _B, int _C) :
              a{_a}, b{_b}, c{_c}, A{_A}, B{_B}, C{_C}
     {
+        this->name = "Треугольник:";
         this->sidesCount = 3;
     }
 
     virtual void printInfo() override
     {
+        std::cout << this->name << std::endl;
         std::cout << "Стороны:\t";
         std::cout << "a = " << this->geta() << " ";
         std::cout << "b = " << this->getb() << " ";
@@ -80,11 +84,13 @@ public:
     Quadrilateral(int _a, int _b, int _c, int _d, int _A, int _B, int _C, int _D) :
                   a{ _a }, b{ _b }, c{ _c }, d{ _d }, A{ _A }, B{ _B }, C{ _C }, D{ _D } 
     {
+        this->name = "Четырехугольник:";
         this->sidesCount = 4;
     }
 
     virtual void printInfo() override
     {
+        std::cout << this->name << std::endl;
         std::cout << "Стороны:\t";
         std::cout << "a = " << this->geta() << " ";
         std::cout << "b = " << this->getb() << " ";
@@ -147,83 +153,74 @@ protected:
 class RectTrian : public Triangle {
 public:
     RectTrian(int _a, int _b, int _c, int _A, int _B) : 
-        Triangle(_a, _b, _c, _A, _B, 90) {}
+        Triangle(_a, _b, _c, _A, _B, 90) 
+    {
+        this->name = "Прямоугольный треугольник:";
+    }
 };
 
 // Равнобедренный треугольник
 class IsoTrian : public Triangle {
 public:
     IsoTrian(int _a, int _b, int _A, int _B) :
-        Triangle(_a, _b, _a, _A, _B, _A) {}
+        Triangle(_a, _b, _a, _A, _B, _A)
+    {
+        this->name = "Равнобедренный треугольник:";
+    }
 };
 
 // Равносторонний треугольник
 class EqualTrian : public IsoTrian {
 public:
     EqualTrian(int _a, int _A) :
-        IsoTrian(_a, _a, _A, _A) {}
+        IsoTrian(_a, _a, _A, _A) 
+    {
+        this->name = "Равносторонний треугольник:";
+    }
 };
 
 // Параллелограмм
 class Parall : public Quadrilateral {
 public:
     Parall(int _a, int _b, int _A, int _B) :
-        Quadrilateral(_a, _b, _a, _b, _A, _B, _A, _B) {}
+        Quadrilateral(_a, _b, _a, _b, _A, _B, _A, _B) 
+    {
+        this->name = "Параллелограмм:";
+    }
 };
 
 // Прямоугольник
 class Rectangle : public Parall {
 public:
     Rectangle(int _a, int _b) :
-        Parall (_a, _b, 90, 90) {}
+        Parall (_a, _b, 90, 90) 
+    {
+        this->name = "Прямоугольник:";
+    }
 };
 
 // Квадрат
 class Square : public Rectangle {
 public:
     Square(int _a) :
-        Rectangle (_a, _a) {}
+        Rectangle (_a, _a) 
+    {
+        this->name = "Квадрат:";
+    }
 };
 
 // Ромб
 class Rhombus : public Parall {
 public:
     Rhombus(int _a, int _A, int _B) :
-        Parall(_a, _a, _A, _B) {}
+        Parall(_a, _a, _A, _B) 
+    {
+        this->name = "Ромб:";
+    }
 };
 
 void printFigInfo(Figure* fig, int numb)
 {
-    switch (numb)
-    {
-    case 0:
-        std::cout << "Треугольник:\n";
-        break;
-    case 1:
-        std::cout << "Прямоугольный треугольник:\n";
-        break;
-    case 2:
-        std::cout << "Равнобедренный треугольник:\n";
-        break;
-    case 3:
-        std::cout << "Равносторонний треугольник:\n";
-        break;
-    case 4:
-        std::cout << "Четырёхугольник:\n";
-        break;
-    case 5:
-        std::cout << "Прямоугольник:\n";
-        break;
-    case 6:
-        std::cout << "Квадрат:\n";
-        break;
-    case 7:
-        std::cout << "Параллелограмм:\n";
-        break;
-    case 8:
-        std::cout << "Ромб:\n";
-        break;
-    }
     fig->printInfo();
 }
 
